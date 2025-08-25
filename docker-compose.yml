@@ -1,0 +1,42 @@
+version: "1.0"
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:13-alpine
+    container_name: Postgres_DB
+    environment:
+      POSTGRES_DB: sustaio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - sustaio-network-local
+
+#  # Backend Service
+#  backend:
+#    build: .
+#    container_name: sustaio_server
+#    ports:
+#      - "8888:8888"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/sustaio
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: 123
+#    env_file:
+#      - .env
+#    depends_on:
+#      - db
+#    networks:
+#      - sustaio-network-local
+
+# Volume for persistent PostgreSQL and Redis storage
+volumes:
+  db_data:
+
+# Define custom Docker network
+networks:
+  sustaio-network-local:
+    driver: bridge

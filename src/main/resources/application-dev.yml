@@ -1,0 +1,43 @@
+server:
+  port: 8082
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sustaio
+    username: postgres
+    password: 123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  security:
+    jwt:
+      access-expires-at: 9_000_000
+      refresh-expires-at: 2_592_000_000 #30day
+      prefix: "Bearer "
+      auth-header: "Authorization"
+      access-secret: access
+      refresh-secret: refresh
+  api:
+    base-url-api: http://localhost:8082
+    title: Sustaio APIs
+    version: 1.0.0
+    description: (Team Kìn Chá Nà - GDSC 2024) Sustaio - Nông nghiệp bền vững
+    contact-name: Kìn Chá nà
+    contact-email: trankimhoang1710@gmail.com
+    swagger:
+      enable: true
+
+firebase:
+  service-account: classpath:firebase-service-account.json
