@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,9 +43,10 @@ public class PostServiceImpl implements PostService {
                 filterRequest.getEntry(),
                 sort
         );
+        Specification<Post> specification = Specification.where(hasTitle(filterRequest.getTitle()));
 
         // Lấy dữ liệu từ DB
-        Page<Post> postPage = postRepository.findAll(pageable);
+        Page<Post> postPage = postRepository.findAll(specification, pageable);
 
         // Convert sang PostDto
         Page<PostDto> postDtoPage = postPage.map(PostDto::from);
@@ -79,5 +81,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public void delete(Long id) {
 
+    }
+
+    private Specification<Post> hasTitle(String title) {
+        return (root, query, cb) ->
+                title == null ? null : cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%");
     }
 }

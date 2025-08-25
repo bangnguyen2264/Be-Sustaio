@@ -17,7 +17,6 @@ public class BaseFilterRequest {
     private int page = 0;
     @Min(value = 1, message = "Entry size must be greater than 0")
     @Schema(defaultValue = "10")
-    @NotBlank(message = "")
     private int entry = 10;
 
     @NotBlank(message = "Field to sort must not be blank")
