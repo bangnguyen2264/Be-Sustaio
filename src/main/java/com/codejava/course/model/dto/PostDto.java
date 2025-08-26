@@ -1,5 +1,6 @@
 package com.codejava.course.model.dto;
 
+import com.codejava.course.model.entity.Image;
 import com.codejava.course.model.entity.Post;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class PostDto {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .imageUrl(post.getImageUrl())
+                .imageUrl(post.getImage() == null ? "" :"/api/v1/image/get/"+ post.getImage().getId().toString())
                 .categoryDto(CategoryDto.from(post.getCategory()))
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
