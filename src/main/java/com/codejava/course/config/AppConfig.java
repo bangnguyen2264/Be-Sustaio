@@ -113,7 +113,6 @@ public class AppConfig {
                                 .id((long) (i * 10 + j))
                                 .title(title)
                                 .content(message)
-                                .imageUrl("https://i.pinimg.com/564x/5a/83/7d/5a837d657f81cf04983db6f516c9e8bb.jpg")
                                 .category(categoryPost)
                                 .build());
             }

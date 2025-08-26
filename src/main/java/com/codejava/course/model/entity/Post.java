@@ -19,8 +19,9 @@ public class Post extends BaseEntity {
     private String title;
     @Column(length = 1000000)
     private String content;
-//    @OneToOne
-    private String imageUrl;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "image_id")
+    private Image image;
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
     private Long viewCount = 0L;
