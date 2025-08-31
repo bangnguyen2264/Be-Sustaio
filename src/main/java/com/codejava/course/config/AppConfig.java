@@ -1,5 +1,6 @@
 package com.codejava.course.config;
 
+import com.codejava.course.model.constant.Status;
 import com.codejava.course.model.entity.*;
 import com.codejava.course.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -119,8 +120,8 @@ public class AppConfig {
         }
         log.info("Posts initialized successfully");
 
-        Collab collab1 = collabRepository.save(
-                Collab.builder()
+        Collaboration collaboration1 = collabRepository.save(
+                Collaboration.builder()
                         .id(1L)
                         .content("Company Name: Southern Food Corporation\n" +
                                 "Field of Operation: Grains and Foodstuffs\n" +
@@ -134,8 +135,8 @@ public class AppConfig {
                         .user(userRepository.findById(3L).get())
                         .build()
         );
-        Collab collab2 = collabRepository.save(
-                Collab.builder()
+        Collaboration collaboration2 = collabRepository.save(
+                Collaboration.builder()
                         .id(2L)
                         .content("Company Name: The Hanoi Foodstuff and Food Trading Joint Stock Company\n" +
                                 "Field of Operation: Supplying and trading grains and foodstuffs.\n" +
@@ -152,8 +153,8 @@ public class AppConfig {
         );
         log.info("Collabs initialized successfully");
 
-        CollabRequest collabRequest = collabRequestRepository.save(
-                CollabRequest.builder()
+        CollaborationRequest collaborationRequest = collabRequestRepository.save(
+                CollaborationRequest.builder()
                         .id(1L)
                         .fullName("Nguyen Van A")
                         .email("kinchana@gmail.com")
@@ -161,8 +162,8 @@ public class AppConfig {
                         .address("02 Vo Oanh, Ward 25, Binh Thanh District, Ho Chi Minh City, Vietnam")
                         .description("I want to collaborate with The Hanoi Foodstuff and Food Trading Joint Stock Company to supply my agricultural products.")
                         .photographicEvidenceUrl("https://maynongnghiepbinhminh.com/wp-content/uploads/2022/08/de-an-co.jpg")
-                        .status("PENDING")
-                        .collab(collab2)
+                        .status(Status.PENDING)
+                        .collaboration(collaboration2)
                         .user(userRepository.findById(2L).get())
                         .build()
         );

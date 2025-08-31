@@ -1,6 +1,7 @@
 package com.codejava.course.model.form;
 
-import com.codejava.course.model.entity.CollabRequest;
+import com.codejava.course.model.constant.Status;
+import com.codejava.course.model.entity.CollaborationRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -27,15 +28,15 @@ public class CollabRequestForm {
     @NotNull(message = "Collab id is required")
     private long collabId;
 
-    public static CollabRequest toEntity(CollabRequestForm collabRequestForm) {
-        return CollabRequest.builder()
+    public static CollaborationRequest toEntity(CollabRequestForm collabRequestForm) {
+        return CollaborationRequest.builder()
                 .fullName(collabRequestForm.getFullName())
                 .email(collabRequestForm.getEmail())
                 .phone(collabRequestForm.getPhone())
                 .address(collabRequestForm.getAddress())
                 .description(collabRequestForm.getDescription())
                 .photographicEvidenceUrl(collabRequestForm.getPhotographicEvidenceUrl())
-                .status("PENDING")
+                .status(Status.PENDING)
                 .build();
     }
 }

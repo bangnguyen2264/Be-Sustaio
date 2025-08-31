@@ -4,7 +4,7 @@ import com.codejava.course.exception.BadRequestException;
 import com.codejava.course.model.dto.ApiResponse;
 import com.codejava.course.model.dto.PostDto;
 import com.codejava.course.model.entity.Category;
-import com.codejava.course.model.entity.Image;
+import com.codejava.course.model.entity.MediaFile;
 import com.codejava.course.model.entity.Post;
 import com.codejava.course.model.form.PostForm;
 import com.codejava.course.model.form.PostUpdateForm;
@@ -74,11 +74,11 @@ public class PostServiceImpl implements PostService {
         Post post = Post.builder()
                 .title(form.getTitle())
                 .content(form.getContent())
+                .image(form.getImageFile().isBlank() ? null : form.getImageFile())
                 .category(category)
                 .viewCount(0L)
                 .build();
 
-        handleImage(form.getImageFile(), post);
 
         Post savedPost = postRepository.save(post);
         return PostDto.from(savedPost);
@@ -107,7 +107,9 @@ public class PostServiceImpl implements PostService {
             post.setCategory(category);
         }
 
-        handleImage(dto.getImageFile(), post);
+        if (dto.getImageFile() != null && !dto.getImageFile().isBlank()) {
+            post.setImage(dto.getImageFile());
+        }
 
         Post updatedPost = postRepository.save(post);
         return PostDto.from(updatedPost);
@@ -132,14 +134,5 @@ public class PostServiceImpl implements PostService {
                 : cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%");
     }
 
-    private void handleImage(MultipartFile imageFile, Post post) {
-        if (imageFile != null && !imageFile.isEmpty()) {
-            try {
-                Image savedImage = imageService.saveImage(imageFile);
-                post.setImage(savedImage);
-            } catch (Exception e) {
-                throw new BadRequestException("Failed to save image: " + e.getMessage());
-            }
-        }
-    }
+
 }

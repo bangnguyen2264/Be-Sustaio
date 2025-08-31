@@ -57,7 +57,7 @@ public class PostController {
     )
     public ResponseEntity<PostDto> updatePost(
             @PathVariable Long id,
-            @Valid @Schema(implementation = PostUpdateForm.class) PostUpdateForm form
+            @Valid @ModelAttribute PostUpdateForm form
     ) {
         return ResponseEntity.ok(postService.update(id, form));
     }

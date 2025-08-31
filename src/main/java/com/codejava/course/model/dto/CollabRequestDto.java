@@ -1,6 +1,6 @@
 package com.codejava.course.model.dto;
 
-import com.codejava.course.model.entity.CollabRequest;
+import com.codejava.course.model.entity.CollaborationRequest;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,18 +18,18 @@ public class CollabRequestDto {
     private CollabDto collabDto;
     private UserDto userDto;
 
-    public static CollabRequestDto from(CollabRequest collabRequest) {
+    public static CollabRequestDto from(CollaborationRequest collaborationRequest) {
         return CollabRequestDto.builder()
-                .id(collabRequest.getId())
-                .fullName(collabRequest.getFullName())
-                .email(collabRequest.getEmail())
-                .phone(collabRequest.getPhone())
-                .address(collabRequest.getAddress())
-                .description(collabRequest.getDescription())
-                .photographicEvidenceUrl(collabRequest.getPhotographicEvidenceUrl())
-                .status(collabRequest.getStatus())
-                .collabDto(CollabDto.from(collabRequest.getCollab()))
-                .userDto(UserDto.from(collabRequest.getUser()))
+                .id(collaborationRequest.getId())
+                .fullName(collaborationRequest.getFullName())
+                .email(collaborationRequest.getEmail())
+                .phone(collaborationRequest.getPhone())
+                .address(collaborationRequest.getAddress())
+                .description(collaborationRequest.getDescription())
+                .photographicEvidenceUrl(collaborationRequest.getPhotographicEvidenceUrl())
+                .status(collaborationRequest.getStatus().toString())
+                .collabDto(CollabDto.from(collaborationRequest.getCollaboration()))
+                .userDto(UserDto.from(collaborationRequest.getUser()))
                 .build();
     }
 }

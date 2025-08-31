@@ -25,7 +25,6 @@ public class PostForm {
     @NotNull(message = "Category ID must not be null")
     @Schema(description = "The ID of the category to which the post belongs", requiredMode = Schema.RequiredMode.REQUIRED, defaultValue = "1")
     private Long categoryId;
-    @NotNull(message = "Image file must not be null")
-    @Schema(description = "Image file for the post (e.g., PNG, JPEG).", requiredMode = Schema.RequiredMode.REQUIRED, type = "string", format = "binary", defaultValue = "")
-    private MultipartFile imageFile;
+    @Schema(description = "The image path ")
+    private String imageFile;
 }

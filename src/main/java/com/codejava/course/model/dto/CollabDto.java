@@ -1,6 +1,6 @@
 package com.codejava.course.model.dto;
 
-import com.codejava.course.model.entity.Collab;
+import com.codejava.course.model.entity.Collaboration;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,17 +18,17 @@ public class CollabDto {
     private CategoryDto categoryDto;
     private UserDto userDto;
 
-    public static CollabDto from(Collab collab) {
+    public static CollabDto from(Collaboration collaboration) {
         return CollabDto.builder()
-                .id(collab.getId())
-                .content(collab.getContent())
-                .otherContent(collab.getOtherContent())
-                .descEnterprise(collab.getDescEnterprise())
-                .address(collab.getAddress())
-                .verified(collab.getVerified())
-                .coverImageUrl(collab.getCoverImageUrl())
-                .categoryDto(CategoryDto.from(collab.getCategory()))
-                .userDto(UserDto.from(collab.getUser()))
+                .id(collaboration.getId())
+                .content(collaboration.getContent())
+                .otherContent(collaboration.getOtherContent())
+                .descEnterprise(collaboration.getDescEnterprise())
+                .address(collaboration.getAddress())
+                .verified(collaboration.getVerified())
+                .coverImageUrl(collaboration.getCoverImageUrl())
+                .categoryDto(CategoryDto.from(collaboration.getCategory()))
+                .userDto(UserDto.from(collaboration.getUser()))
                 .build();
     }
 }

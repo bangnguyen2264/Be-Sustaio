@@ -26,11 +26,12 @@ public class User extends BaseEntity implements UserDetails {
     private String username;
     private String password;
     private String name;
-    @OneToOne()
-    private Image avatarUrl;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "image_id")
+    private MediaFile avatarUrl;
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
-
+    private boolean verified = false;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getName()));

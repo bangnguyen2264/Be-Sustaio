@@ -1,5 +1,6 @@
 package com.codejava.course.controller;
 
+import com.codejava.course.model.constant.Status;
 import com.codejava.course.model.form.CollabRequestForm;
 import com.codejava.course.service.CollabRequestService;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class CollabRequestController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity updateStatusCollabRequest(@PathVariable("id") long id, @RequestParam("status") String status) {
+    public ResponseEntity updateStatusCollabRequest(@PathVariable("id") long id, @RequestParam("status") Status status) {
         return ResponseEntity.ok(collabRequestService.updateStatusCollabRequest(status, id));
     }
 }

@@ -1,10 +1,26 @@
 package com.codejava.course.utils;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class ImageUtils {
+
+    public static String convertFileToString(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return ""; // hoặc null tùy yêu cầu
+        }
+        try {
+            return new String(file.getBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return ""; // fallback khi đọc lỗi
+        }
+    }
+
     public static byte[] compressImage(byte[] data) {
 
         Deflater deflater = new Deflater();

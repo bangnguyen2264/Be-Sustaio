@@ -2,7 +2,7 @@ package com.codejava.course.service.impl;
 
 import com.codejava.course.exception.BadRequestException;
 import com.codejava.course.model.dto.ImageUrlDto;
-import com.codejava.course.model.entity.Image;
+import com.codejava.course.model.entity.MediaFile;
 import com.codejava.course.repository.ImageRepository;
 import com.codejava.course.service.ImageService;
 import com.codejava.course.utils.AppUtils;
@@ -26,16 +26,17 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final AppUtils appUtils;
+    private static final String IMAGES_PATH = "/api/v1/image/get/";
 
     @Override
     public ResponseEntity<ImageUrlDto> uploadImage(MultipartFile file) throws IOException {
         if (isImage(file)) {
-            Image image = imageRepository.save(Image.builder()
+            MediaFile image = imageRepository.save(MediaFile.builder()
                     .name(file.getOriginalFilename())
                     .type(file.getContentType())
                     .data(ImageUtils.compressImage(file.getBytes())).build());
 
-            String imageUrl = appUtils.getBaseUrlApi() + "/api/v1/image/get/" + image.getId();
+            String imageUrl =  IMAGES_PATH + image.getId();
             return new ResponseEntity<>(ImageUrlDto.builder()
                     .imageUrl(imageUrl)
                     .build(), HttpStatus.OK);
@@ -46,7 +47,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public ResponseEntity<byte[]> getImageById(UUID id) throws IOException {
-        Optional<Image> dbImage = imageRepository.findById(id);
+        Optional<MediaFile> dbImage = imageRepository.findById(id);
         if (dbImage.isPresent()) {
             return ResponseEntity.ok()
                     .contentType(MediaType.valueOf(dbImage.get().getType()))
@@ -56,10 +57,10 @@ public class ImageServiceImpl implements ImageService {
         }
     }
     @Override
-    public Image saveImage(MultipartFile file) throws IOException {
+    public MediaFile saveImage(MultipartFile file) throws IOException {
 
         if (isImage(file)) {
-            Image image = imageRepository.save(Image.builder()
+            MediaFile image = imageRepository.save(MediaFile.builder()
                     .name(file.getOriginalFilename())
                     .type(file.getContentType())
                     .data(ImageUtils.compressImage(file.getBytes())).build());
