@@ -26,9 +26,7 @@ public class User extends BaseEntity implements UserDetails {
     private String username;
     private String password;
     private String name;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "image_id")
-    private MediaFile avatarUrl;
+    private String avatarUrl;
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
     private boolean verified = false;

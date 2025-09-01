@@ -26,7 +26,7 @@ public class UserDto {
         return UserDto.builder()
                 .username(user.getUsername())
                 .name(user.getName())
-                .avatarUrl(user.getAvatarUrl().getId().toString())
+                .avatarUrl(user.getAvatarUrl())
                 .role(user.getRole().getName())
                 .categoryAccount(categoryAccount)
                 .build();

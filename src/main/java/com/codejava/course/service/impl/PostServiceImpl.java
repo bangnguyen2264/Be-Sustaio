@@ -1,6 +1,7 @@
 package com.codejava.course.service.impl;
 
 import com.codejava.course.exception.BadRequestException;
+import com.codejava.course.exception.NotFoundException;
 import com.codejava.course.model.dto.ApiResponse;
 import com.codejava.course.model.dto.PostDto;
 import com.codejava.course.model.entity.Category;
@@ -60,7 +61,7 @@ public class PostServiceImpl implements PostService {
             throw new BadRequestException("Id can't be null");
         }
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Post not found"));
+                .orElseThrow(() -> new NotFoundException("Post not found"));
         return PostDto.from(post);
     }
 
@@ -68,7 +69,7 @@ public class PostServiceImpl implements PostService {
     public PostDto create(PostForm form) {
         // Validate và lấy category
         Category category = categoryRepository.findById(form.getCategoryId())
-                .orElseThrow(() -> new BadRequestException("Category not found"));
+                .orElseThrow(() -> new NotFoundException("Category not found"));
 
         // Build Post entity
         Post post = Post.builder()
@@ -87,11 +88,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto update(Long id, PostUpdateForm dto) {
         if (id == null) {
-            throw new BadRequestException("Id can't be null");
+            throw new NotFoundException("Id can't be null");
         }
 
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Post not found"));
+                .orElseThrow(() -> new NotFoundException("Post not found"));
 
         if (dto.getTitle() != null && !dto.getTitle().isBlank()) {
             post.setTitle(dto.getTitle());
@@ -103,7 +104,7 @@ public class PostServiceImpl implements PostService {
 
         if (dto.getCategoryId() != null) {
             Category category = categoryRepository.findById(dto.getCategoryId())
-                    .orElseThrow(() -> new BadRequestException("Category not found"));
+                    .orElseThrow(() -> new NotFoundException("Category not found"));
             post.setCategory(category);
         }
 
@@ -118,11 +119,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public void delete(Long id) {
         if (id == null) {
-            throw new BadRequestException("Id can't be null");
+            throw new NotFoundException("Id can't be null");
         }
 
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Post not found"));
+                .orElseThrow(() -> new NotFoundException("Post not found"));
 
         postRepository.delete(post);
     }

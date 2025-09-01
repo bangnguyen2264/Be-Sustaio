@@ -1,5 +1,5 @@
 package com.codejava.course.model.constant;
 
 public enum Status {
-    PENDING, APPROVED, REJECTED;
+    PENDING, APPROVED, REJECTED, CANCELLED;
 }

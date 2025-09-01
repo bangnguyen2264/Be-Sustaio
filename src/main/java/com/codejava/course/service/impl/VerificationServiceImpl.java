@@ -1,6 +1,6 @@
 package com.codejava.course.service.impl;
 
-import com.codejava.course.exception.BadRequestException;
+import com.codejava.course.exception.NotFoundException;
 import com.codejava.course.model.constant.Status;
 import com.codejava.course.model.dto.ApiResponse;
 import com.codejava.course.model.entity.MediaFile;
@@ -45,13 +45,15 @@ public class VerificationServiceImpl implements VerificationService {
 
     @Override
     public VerificationRequest getById(Long id) {
-        return null;
+        return verificationRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Verification request not found with id: " + id)
+        );
     }
 
     @Override
     public VerificationRequest create(VerificationRequestForm createRequest) {
         User user = userRepository.findById(createRequest.getUserId()).orElseThrow(
-                ()-> new BadRequestException("User not found")
+                ()-> new NotFoundException("User not found")
         );
         VerificationRequest verificationRequest = VerificationRequest.builder()
                 .user(user)
@@ -65,27 +67,27 @@ public class VerificationServiceImpl implements VerificationService {
                 .status(Status.PENDING)
                 .build();
         handleCertificateDocument(createRequest.getCertificateDocument(), verificationRequest);
-        
+
         return verificationRepository.save(verificationRequest);
     }
 
     @Override
     public VerificationRequest update(Long id, VerificationUpdateForm updateRequest) {
         VerificationRequest existingRequest = verificationRepository.findById(id).orElseThrow(
-                () -> new BadRequestException("Verification request not found with id: " + id)
+                () -> new NotFoundException("Verification request not found with id: " + id)
         );
 
         existingRequest.setStatus(updateRequest.getStatus());
         if(updateRequest.getStatus() == Status.PENDING) {
             User user = userRepository.findById(id).orElseThrow(
-                    () -> new BadRequestException("User not found with id: " + id)
+                    () -> new NotFoundException("User not found with id: " + id)
             );
             user.setVerified(true);
             userRepository.save(user);
         }
         if (updateRequest.getStatus() == Status.REJECTED) {
             if (updateRequest.getRejectionReason() == null || updateRequest.getRejectionReason().isBlank()) {
-                throw new BadRequestException("Rejection reason is required when status is REJECTED");
+                throw new NotFoundException("Rejection reason is required when status is REJECTED");
             }
             existingRequest.setRejectionReason(updateRequest.getRejectionReason());
         } else {
@@ -99,7 +101,7 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public void delete(Long id) {
         VerificationRequest existingRequest = verificationRepository.findById(id).orElseThrow(
-                () -> new BadRequestException("Verification request not found with id: " + id)
+                () -> new NotFoundException("Verification request not found with id: " + id)
         );
         verificationRepository.delete(existingRequest);
     }
@@ -110,7 +112,7 @@ public class VerificationServiceImpl implements VerificationService {
                 MediaFile savedImage = imageService.saveImage(imageFile);
                 verificationRequest.setCertificateDocument(savedImage);
             } catch (Exception e) {
-                throw new BadRequestException("Failed to save image: " + e.getMessage());
+                throw new NotFoundException("Failed to save image: " + e.getMessage());
             }
         }
     }
