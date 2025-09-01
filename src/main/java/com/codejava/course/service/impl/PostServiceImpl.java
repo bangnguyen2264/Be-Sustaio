@@ -5,14 +5,13 @@ import com.codejava.course.exception.NotFoundException;
 import com.codejava.course.model.dto.ApiResponse;
 import com.codejava.course.model.dto.PostDto;
 import com.codejava.course.model.entity.Category;
-import com.codejava.course.model.entity.MediaFile;
 import com.codejava.course.model.entity.Post;
 import com.codejava.course.model.form.PostForm;
 import com.codejava.course.model.form.PostUpdateForm;
 import com.codejava.course.model.request.PostFilterRequest;
 import com.codejava.course.repository.CategoryRepository;
 import com.codejava.course.repository.PostRepository;
-import com.codejava.course.service.ImageService;
+import com.codejava.course.service.MediaFileService;
 import com.codejava.course.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
-    private final ImageService imageService;
+    private final MediaFileService mediaFileService;
 
     @Override
     public ApiResponse<PostDto> getAll(PostFilterRequest filterRequest) {

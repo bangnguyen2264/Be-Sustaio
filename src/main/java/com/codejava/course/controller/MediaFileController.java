@@ -1,7 +1,7 @@
 package com.codejava.course.controller;
 
-import com.codejava.course.model.dto.ImageUrlDto;
-import com.codejava.course.service.ImageService;
+import com.codejava.course.model.dto.MediaFileUrlDto;
+import com.codejava.course.service.MediaFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +13,16 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-public class ImageController {
-    private final ImageService imageService;
+public class MediaFileController {
+    private final MediaFileService mediaFileService;
 
     @PostMapping(value = "/api/v1/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ImageUrlDto> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
-        return imageService.uploadImage(file);
+    public ResponseEntity<MediaFileUrlDto> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+        return mediaFileService.uploadImage(file);
     }
 
     @GetMapping(path = "/api/v1/image/get/{id}")
     public ResponseEntity<byte[]> getImageById(@PathVariable("id") UUID id) throws IOException {
-        return imageService.getImageById(id);
+        return mediaFileService.getImageById(id);
     }
 }

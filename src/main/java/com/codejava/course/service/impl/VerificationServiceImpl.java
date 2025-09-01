@@ -1,5 +1,6 @@
 package com.codejava.course.service.impl;
 
+import com.codejava.course.exception.BadRequestException;
 import com.codejava.course.exception.NotFoundException;
 import com.codejava.course.model.constant.Status;
 import com.codejava.course.model.dto.ApiResponse;
@@ -11,7 +12,7 @@ import com.codejava.course.model.form.VerificationUpdateForm;
 import com.codejava.course.model.request.VerificationFilterRequest;
 import com.codejava.course.repository.UserRepository;
 import com.codejava.course.repository.VerificationRepository;
-import com.codejava.course.service.ImageService;
+import com.codejava.course.service.MediaFileService;
 import com.codejava.course.service.VerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class VerificationServiceImpl implements VerificationService {
     private final VerificationRepository verificationRepository;
     private final UserRepository userRepository;
-    private final ImageService imageService;
+    private final MediaFileService mediaFileService;
 
     @Override
     public ApiResponse<VerificationRequest> getAll(VerificationFilterRequest filterRequest) {
@@ -62,11 +63,11 @@ public class VerificationServiceImpl implements VerificationService {
                 .address(createRequest.getAddress())
                 .phoneNumber(createRequest.getPhoneNumber())
                 .businessLicenseNumber(createRequest.getBusinessLicenseNumber())
+                .certificateDocument(createRequest.getCertificateDocument())
                 .taxCode(createRequest.getTaxCode())
                 .contactPerson(createRequest.getContactPerson())
                 .status(Status.PENDING)
                 .build();
-        handleCertificateDocument(createRequest.getCertificateDocument(), verificationRequest);
 
         return verificationRepository.save(verificationRequest);
     }
@@ -87,7 +88,7 @@ public class VerificationServiceImpl implements VerificationService {
         }
         if (updateRequest.getStatus() == Status.REJECTED) {
             if (updateRequest.getRejectionReason() == null || updateRequest.getRejectionReason().isBlank()) {
-                throw new NotFoundException("Rejection reason is required when status is REJECTED");
+                throw new BadRequestException("Rejection reason is required when status is REJECTED");
             }
             existingRequest.setRejectionReason(updateRequest.getRejectionReason());
         } else {
@@ -106,14 +107,5 @@ public class VerificationServiceImpl implements VerificationService {
         verificationRepository.delete(existingRequest);
     }
 
-    private void handleCertificateDocument(MultipartFile imageFile, VerificationRequest verificationRequest) {
-        if (imageFile != null && !imageFile.isEmpty()) {
-            try {
-                MediaFile savedImage = imageService.saveImage(imageFile);
-                verificationRequest.setCertificateDocument(savedImage);
-            } catch (Exception e) {
-                throw new NotFoundException("Failed to save image: " + e.getMessage());
-            }
-        }
-    }
+
 }

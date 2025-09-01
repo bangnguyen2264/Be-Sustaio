@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface ImageRepository extends JpaRepository<MediaFile, UUID> {
+public interface MediaFileRepository extends JpaRepository<MediaFile, UUID> {
     boolean existsImageById(UUID id);
 }

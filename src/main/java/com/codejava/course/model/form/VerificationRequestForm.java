@@ -21,7 +21,7 @@ public class VerificationRequestForm {
     private String businessLicenseNumber;  // Business license
 
     @NotNull(message = "Certificate document is required")
-    private MultipartFile certificateDocument; // Certificate document
+    private String certificateDocument; // Certificate document
 
     @NotBlank(message = "Address cannot be empty")
     @Size(max = 255, message = "Address must not exceed 255 characters")

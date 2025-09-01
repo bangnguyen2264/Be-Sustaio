@@ -27,9 +27,8 @@ public class VerificationRequest extends BaseEntity {
     // Mã số thuế (nếu là doanh nghiệp)
 
     private String businessLicenseNumber;
-    // Số giấy phép kinh doanh
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private MediaFile certificateDocument;
+
+    private String certificateDocument;
     // Giấy chứng nhận hộ nông nghiệp hoặc doanh nghiệp
 
     private String address;

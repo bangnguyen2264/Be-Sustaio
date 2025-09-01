@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ImageUrlDto {
-    private String imageUrl;
+public class MediaFileUrlDto {
+    private String pathUrl;
 }
