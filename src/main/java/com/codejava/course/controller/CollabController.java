@@ -1,7 +1,10 @@
 package com.codejava.course.controller;
 
+import com.codejava.course.model.request.CollaborationFilterRequest;
 import com.codejava.course.service.CollabService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +18,8 @@ public class CollabController {
     private final CollabService collabService;
 
     @GetMapping
-    public ResponseEntity getAll() {
-        return ResponseEntity.ok(collabService.getAllCollabs());
+    public ResponseEntity getAll(@Valid @ParameterObject CollaborationFilterRequest collaborationFilterRequest) {
+        return ResponseEntity.ok(collabService.getAllCollabs(collaborationFilterRequest));
     }
 
     @GetMapping("/{id}")
@@ -24,8 +27,4 @@ public class CollabController {
         return ResponseEntity.ok(collabService.getCollabById(id));
     }
 
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity getByCategoryId(@PathVariable("categoryId") long categoryId) {
-        return ResponseEntity.ok(collabService.getAllCollabsByCategoryId(categoryId));
-    }
 }

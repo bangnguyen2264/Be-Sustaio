@@ -5,9 +5,9 @@ import com.codejava.course.model.dto.CollabRequestDto;
 import com.codejava.course.model.entity.Collaboration;
 import com.codejava.course.model.entity.CollaborationRequest;
 import com.codejava.course.model.entity.User;
-import com.codejava.course.model.form.CollabRequestForm;
-import com.codejava.course.repository.CollabRepository;
-import com.codejava.course.repository.CollabRequestRepository;
+import com.codejava.course.model.form.CollaborationRequestForm;
+import com.codejava.course.repository.CollaborationRepository;
+import com.codejava.course.repository.CollaborationRequestRepository;
 import com.codejava.course.repository.UserRepository;
 import com.codejava.course.service.CollabRequestService;
 import com.codejava.course.utils.SecurityUtils;
@@ -21,22 +21,22 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class CollabRequestServiceImpl implements CollabRequestService {
-    private final CollabRequestRepository collabRequestRepository;
+    private final CollaborationRequestRepository collaborationRequestRepository;
     private final UserRepository userRepository;
-    private final CollabRepository collabRepository;
+    private final CollaborationRepository collaborationRepository;
 
     @Override
-    public CollabRequestDto createCollabRequest(CollabRequestForm collabRequestForm) {
-        Collaboration collaboration = collabRepository.findById(collabRequestForm.getCollabId())
-                .orElseThrow(() -> new IllegalArgumentException("Collab not found with id: " + collabRequestForm.getCollabId()));
+    public CollabRequestDto createCollabRequest(CollaborationRequestForm collaborationRequestForm) {
+        Collaboration collaboration = collaborationRepository.findById(collaborationRequestForm.getCollabId())
+                .orElseThrow(() -> new IllegalArgumentException("Collab not found with id: " + collaborationRequestForm.getCollabId()));
         User user = userRepository.findByUsername(SecurityUtils.getUsernameOfPrincipal())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + SecurityUtils.getUsernameOfPrincipal()));
 
-        CollaborationRequest collaborationRequest = CollabRequestForm.toEntity(collabRequestForm);
+        CollaborationRequest collaborationRequest = CollaborationRequestForm.toEntity(collaborationRequestForm);
         collaborationRequest.setCollaboration(collaboration);
         collaborationRequest.setUser(user);
 
-        CollaborationRequest collaborationRequestCreated = collabRequestRepository.save(collaborationRequest);
+        CollaborationRequest collaborationRequestCreated = collaborationRequestRepository.save(collaborationRequest);
         log.info("Collab Request with id {} created successfully", collaborationRequestCreated.getId());
         return CollabRequestDto.from(collaborationRequestCreated);
     }
@@ -44,12 +44,12 @@ public class CollabRequestServiceImpl implements CollabRequestService {
     @Override
     public String deleteCollabRequest(Long id) {
         //kiểm tra quyền xóa
-        if(!SecurityUtils.getUsernameOfPrincipal().equals(collabRequestRepository.findById(id)
+        if(!SecurityUtils.getUsernameOfPrincipal().equals(collaborationRequestRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Collab Request not found with id: " + id))
                 .getUser().getUsername())){
             throw new IllegalArgumentException("You don't have permission to delete this collab request");
         }
-        collabRequestRepository.deleteById(id);
+        collaborationRequestRepository.deleteById(id);
 
         log.info("Collab Request with id {} deleted successfully", id);
         return "Collab Request deleted successfully";
@@ -57,7 +57,7 @@ public class CollabRequestServiceImpl implements CollabRequestService {
 
     @Override
     public List<CollabRequestDto> getMyCollabRequests() {
-        return collabRequestRepository.findAllByUser_Username(SecurityUtils.getUsernameOfPrincipal())
+        return collaborationRequestRepository.findAllByUser_Username(SecurityUtils.getUsernameOfPrincipal())
                 .stream()
                 .map(CollabRequestDto::from)
                 .toList();
@@ -65,14 +65,14 @@ public class CollabRequestServiceImpl implements CollabRequestService {
 
     @Override
     public CollabRequestDto getCollabRequestById(long id) {
-        return CollabRequestDto.from(collabRequestRepository.findById(id)
+        return CollabRequestDto.from(collaborationRequestRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Collab Request not found with id: " + id)));
     }
 
     @Override
     public CollabRequestDto updateStatusCollabRequest(Status status, long id) {
         //kiểm tra quyền sửa
-        if(!SecurityUtils.getUsernameOfPrincipal().equals(collabRequestRepository.findById(id)
+        if(!SecurityUtils.getUsernameOfPrincipal().equals(collaborationRequestRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Collab Request not found with id: " + id))
                 .getCollaboration().getUser().getUsername())){
             throw new IllegalArgumentException("You don't have permission to update this collab request");
@@ -80,12 +80,12 @@ public class CollabRequestServiceImpl implements CollabRequestService {
 
         //kiểm tra trạng thái đúng k
         if(status.equals("REJECTED") || status.equals("ACCEPTED")){
-            CollaborationRequest collaborationRequest = collabRequestRepository.findById(id)
+            CollaborationRequest collaborationRequest = collaborationRequestRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Collab Request not found with id: " + id));
             collaborationRequest.setStatus(status);
 
             log.info("Collab Request with id {} updated status to {} successfully", id, status);
-            return CollabRequestDto.from(collabRequestRepository.save(collaborationRequest));
+            return CollabRequestDto.from(collaborationRequestRepository.save(collaborationRequest));
         }
         else {
             throw new IllegalArgumentException("Status is not valid");

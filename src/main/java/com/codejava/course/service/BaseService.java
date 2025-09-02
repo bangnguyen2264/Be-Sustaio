@@ -34,4 +34,5 @@ public interface BaseService<R, C, U, F> {
     default ApiResponse<R> customQuery(Object... params) {
         throw new UnsupportedOperationException("Custom query not implemented");
     }
+
 }

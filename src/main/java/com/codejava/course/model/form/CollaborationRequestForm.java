@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CollabRequestForm {
+public class CollaborationRequestForm {
     @NotEmpty(message = "Name is required")
     @Min(value = 5, message = "Username must be at least 5 characters long")
     private String fullName;
@@ -28,14 +28,14 @@ public class CollabRequestForm {
     @NotNull(message = "Collab id is required")
     private long collabId;
 
-    public static CollaborationRequest toEntity(CollabRequestForm collabRequestForm) {
+    public static CollaborationRequest toEntity(CollaborationRequestForm collaborationRequestForm) {
         return CollaborationRequest.builder()
-                .fullName(collabRequestForm.getFullName())
-                .email(collabRequestForm.getEmail())
-                .phone(collabRequestForm.getPhone())
-                .address(collabRequestForm.getAddress())
-                .description(collabRequestForm.getDescription())
-                .photographicEvidenceUrl(collabRequestForm.getPhotographicEvidenceUrl())
+                .fullName(collaborationRequestForm.getFullName())
+                .email(collaborationRequestForm.getEmail())
+                .phone(collaborationRequestForm.getPhone())
+                .address(collaborationRequestForm.getAddress())
+                .description(collaborationRequestForm.getDescription())
+                .photographicEvidenceUrl(collaborationRequestForm.getPhotographicEvidenceUrl())
                 .status(Status.PENDING)
                 .build();
     }

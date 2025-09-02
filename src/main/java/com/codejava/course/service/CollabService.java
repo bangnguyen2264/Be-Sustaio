@@ -1,11 +1,10 @@
 package com.codejava.course.service;
 
+import com.codejava.course.model.dto.ApiResponse;
 import com.codejava.course.model.dto.CollabDto;
-
-import java.util.List;
+import com.codejava.course.model.request.CollaborationFilterRequest;
 
 public interface CollabService {
-    List<CollabDto> getAllCollabs();
+    ApiResponse<CollabDto> getAllCollabs(CollaborationFilterRequest collaborationFilterRequest);
     CollabDto getCollabById(long id);
-    List<CollabDto> getAllCollabsByCategoryId(long categoryId);
 }

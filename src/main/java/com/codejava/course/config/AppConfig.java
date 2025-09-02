@@ -18,8 +18,8 @@ public class AppConfig {
 
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;
-    private final CollabRepository collabRepository;
-    private final CollabRequestRepository collabRequestRepository;
+    private final CollaborationRepository collaborationRepository;
+    private final CollaborationRequestRepository collaborationRequestRepository;
 
     private final NotificationRepository notificationRepository;
     private final PasswordEncoder passwordEncoder;
@@ -120,7 +120,7 @@ public class AppConfig {
         }
         log.info("Posts initialized successfully");
 
-        Collaboration collaboration1 = collabRepository.save(
+        Collaboration collaboration1 = collaborationRepository.save(
                 Collaboration.builder()
                         .id(1L)
                         .content("Company Name: Southern Food Corporation\n" +
@@ -135,7 +135,7 @@ public class AppConfig {
                         .user(userRepository.findById(3L).get())
                         .build()
         );
-        Collaboration collaboration2 = collabRepository.save(
+        Collaboration collaboration2 = collaborationRepository.save(
                 Collaboration.builder()
                         .id(2L)
                         .content("Company Name: The Hanoi Foodstuff and Food Trading Joint Stock Company\n" +
@@ -153,7 +153,7 @@ public class AppConfig {
         );
         log.info("Collabs initialized successfully");
 
-        CollaborationRequest collaborationRequest = collabRequestRepository.save(
+        CollaborationRequest collaborationRequest = collaborationRequestRepository.save(
                 CollaborationRequest.builder()
                         .id(1L)
                         .fullName("Nguyen Van A")

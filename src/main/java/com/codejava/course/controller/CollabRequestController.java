@@ -1,7 +1,7 @@
 package com.codejava.course.controller;
 
 import com.codejava.course.model.constant.Status;
-import com.codejava.course.model.form.CollabRequestForm;
+import com.codejava.course.model.form.CollaborationRequestForm;
 import com.codejava.course.service.CollabRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +30,8 @@ public class CollabRequestController {
     }
 
     @PostMapping
-    public ResponseEntity createCollabRequest(@Valid @RequestBody  CollabRequestForm collabRequestForm) {
-        return ResponseEntity.ok(collabRequestService.createCollabRequest(collabRequestForm));
+    public ResponseEntity createCollabRequest(@Valid @RequestBody CollaborationRequestForm collaborationRequestForm) {
+        return ResponseEntity.ok(collabRequestService.createCollabRequest(collaborationRequestForm));
     }
 
     @PatchMapping("/{id}")
